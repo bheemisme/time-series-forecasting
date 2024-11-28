@@ -1,11 +1,12 @@
 import torch
+import torch.nn as nn
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-def lstm_predict(model,prices,scaler = None):
+def lstm_predict(model: nn.Module,prices: np.ndarray,attr: str,scaler = None):
     X = pd.DataFrame({
-        'adj_close': prices
+        attr: prices
     })
 
     if scaler:
@@ -24,9 +25,9 @@ def lstm_predict(model,prices,scaler = None):
     
     return X[0], y[0][0]
 
-def xgb_predict(model, prices, scaler = None):
+def xgb_predict(model, prices: np.ndarray, attr: str, scaler = None):
     X = pd.DataFrame({
-        'adj_close': prices
+        attr: prices
     })
 
     if scaler:
@@ -40,22 +41,26 @@ def xgb_predict(model, prices, scaler = None):
 
     return X[0], y[0][0]
 
-def lstm_forecast(model, inputs, scaler=None):
-    inputs, out = lstm_predict(model, inputs, scaler)
+def lstm_forecast(model, inputs, attr,  scaler=None):
+    inputs, out = lstm_predict(model, inputs, attr, scaler)
     fig = plt.figure()
-    plt.plot(np.arange(1,len(inputs)+1),inputs, linestyle='dotted', label='input',  marker='o', markersize=5)
-    plt.plot(np.arange(len(inputs)+1, len(inputs)+2),out, linestyle='dotted', label='predicted', color='green', marker='o', markersize=5)
+    plt.plot(np.arange(1,len(inputs)+1),inputs, 
+             linestyle='dotted', label='input', 
+             marker='o', markersize=5)
+    plt.plot(np.arange(len(inputs), len(inputs)+2),np.array([inputs[-1],out]), 
+             linestyle='dotted', label='forecast',
+             color='green', marker='o', markersize=5)
     plt.legend()
     plt.title(f'LSTM Forecasting, forecast={out}')
     return fig
 
-def xgb_forecast(model, inputs, scaler=None):
-    inputs, out = xgb_predict(model, inputs, scaler)
+def xgb_forecast(model, inputs, attr, scaler=None):
+    inputs, out = xgb_predict(model, inputs, attr, scaler)
     fig = plt.figure()
     plt.plot(np.arange(1,len(inputs)+1),inputs, 
              linestyle='dotted', label='input',  
              marker='o', markersize=5)
-    plt.plot(np.arange(len(inputs)+1, len(inputs)+2),np.array([out]), 
+    plt.plot(np.arange(len(inputs), len(inputs)+2),np.array([inputs[-1],out]), 
              linestyle='dotted', label='forecast',
              color='green', marker='o', markersize=5)
     plt.legend()

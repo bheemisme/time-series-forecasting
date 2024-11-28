@@ -1,12 +1,12 @@
 import streamlit as st
 import numpy as np
-from src.models.yahoo import model
+from src.models.apple import model
 from src.models.utils import lstm_forecast, xgb_forecast
 
 
 def app():
     st.title('Time Series Forecasting')
-    st.markdown('## Yahoo Stock Forecasting')
+    st.markdown('## Apple Stock Forecasting')
 
     user_input = st.text_input("Enter numbers separated by commas:")
 
@@ -16,9 +16,8 @@ def app():
             
             
             numbers = np.array(numbers)
-            fig1 = lstm_forecast(model.yahoo_lstm_model, numbers,'adj_close', model.yahoo_scaler)
-
-            fig2 = xgb_forecast(model.yahoo_xgb_model,numbers,'adj_close', model.yahoo_scaler)
+            fig1 = lstm_forecast(model.apple_lstm_model, numbers, attr='adj_close', scaler=model.apple_scaler)
+            fig2 = xgb_forecast(model.apple_xgb_model,numbers,attr='adj_close',scaler= model.apple_scaler)
 
             col1, col2 = st.columns(2)
             with col1:
