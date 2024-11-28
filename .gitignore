@@ -1,2 +1,8 @@
 
-data/*.csv
+/**/*.pkl
+/**/*.pth
+/**/*.joblib
+/**/*.csv
+/**/*.json
+
+/**/__pycache__
