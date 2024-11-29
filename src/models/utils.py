@@ -4,9 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-def lstm_predict(model: nn.Module,prices: np.ndarray,attr: str,scaler = None):
+def lstm_predict(model: nn.Module,inputs: np.ndarray,attr: str,scaler = None):
     X = pd.DataFrame({
-        attr: prices
+        attr: inputs
     })
 
     if scaler:
@@ -25,9 +25,9 @@ def lstm_predict(model: nn.Module,prices: np.ndarray,attr: str,scaler = None):
     
     return X[0], y[0][0]
 
-def xgb_predict(model, prices: np.ndarray, attr: str, scaler = None):
+def xgb_predict(model, inputs: np.ndarray, attr: str, scaler = None):
     X = pd.DataFrame({
-        attr: prices
+        attr: inputs
     })
 
     if scaler:
