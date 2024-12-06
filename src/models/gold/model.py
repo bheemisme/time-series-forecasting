@@ -1,6 +1,11 @@
 import torch.nn as nn
 import torch
 import joblib
+import kagglehub
+import os
+
+
+path = kagglehub.model_download("sudarshan1927/time-series-forecasting/other/gold")
 
 class GoldLSTMModel(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers, output_size, dropout):
@@ -28,8 +33,9 @@ dropout = 0
 gold_lstm_model = GoldLSTMModel(input_size, hidden_size,
                             num_layers, output_size, dropout)
 
-gold_lstm_model.load_state_dict(torch.load('./src/models/gold/gold_lstm_model.pth',
+gold_lstm_model.load_state_dict(torch.load(os.path.join(path, 'gold_lstm_model.pth'),
                                             map_location= 'cpu', weights_only=False))
 
-gold_scaler = joblib.load('./src/models/gold/gold_scaler.joblib')
-gold_xgb_model = joblib.load('./src/models/gold/gold_xgb_model.joblib')
+gold_scaler = joblib.load(os.path.join(path, 'gold_scaler.joblib'))
+
+gold_xgb_model = joblib.load(os.path.join(path, 'gold_xgb_model.joblib'))
