@@ -25,6 +25,7 @@ def app():
                 st.pyplot(fig1)
             with col2:
                 st.pyplot(fig2)
-        except ValueError:
+        except ValueError as e:
+            print(e)
             st.error("Please enter valid numbers separated by commas.")
     

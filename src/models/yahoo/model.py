@@ -1,6 +1,10 @@
 import torch
 import torch.nn as nn
 import joblib
+import kagglehub
+import os
+
+path = kagglehub.model_download("sudarshan1927/time-series-forecasting/other/yahoo")
 
 class YahooLSTMModel(nn.Module):
     def __init__(self, input_size,
@@ -25,16 +29,15 @@ class YahooLSTMModel(nn.Module):
 
 
 input_size = 1
-hidden_size = 128
+hidden_size = 10
 num_layers = 1
 output_size = 1
 
 yahoo_lstm_model = YahooLSTMModel(input_size, hidden_size, num_layers, output_size)
 yahoo_lstm_model.load_state_dict(
-    torch.load("./src/models/yahoo/yahoo_lstm_model.pth", weights_only=True, map_location='cpu')
+    torch.load(os.path.join(path, 'yahoo_lstm_model.pth'), weights_only=True, map_location='cpu')
 )
-
-yahoo_scaler = joblib.load('./src/models/yahoo/yahoo_scaler.joblib')
-yahoo_xgb_model = joblib.load('./src/models/yahoo/yahoo_xgb_model.joblib')
+yahoo_scaler = joblib.load(os.path.join(path, 'yahoo_scaler.joblib'))
+yahoo_xgb_model = joblib.load(os.path.join(path, 'yahoo_xgb_model.joblib'))
 
 

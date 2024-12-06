@@ -1,6 +1,10 @@
 import torch
 import torch.nn as nn
 import joblib
+import kagglehub
+import os
+
+path = kagglehub.model_download("sudarshan1927/time-series-forecasting/other/climate")
 
 class ClimateModel(nn.Module):
 
@@ -15,7 +19,7 @@ class ClimateModel(nn.Module):
     return out
   
 input_size = 1
-hidden_size = 10
+hidden_size = 8
 num_layers = 1
 output_size= 1
 
@@ -26,15 +30,14 @@ climate_model = ClimateModel(input_size=input_size,
 
 
 
-
 climate_model.load_state_dict(
-    torch.load("./src/models/climate/climate_model.pth", 
+    torch.load(os.path.join(path, 'climate_model.pth'), 
                weights_only=True, map_location='cpu')
 )
 
 
-climate_xgb_model = joblib.load('./src/models/climate/climate_xgb_model.joblib')
-climate_scaler = joblib.load('./src/models/climate/climate_scaler.joblib')
+climate_xgb_model = joblib.load(os.path.join(path, 'climate_xgb_model.joblib'))
+climate_scaler = joblib.load(os.path.join(path, 'climate_scaler.joblib'))
 
 
 
